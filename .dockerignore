@@ -1,0 +1,12 @@
+node_modules
+docker
+dist
+.git
+.env
+test
+*.log
+
+*.test.ts
+*.spec.ts
+*.test.js
+*.spec.js
