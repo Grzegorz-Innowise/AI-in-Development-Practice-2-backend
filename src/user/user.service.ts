@@ -8,6 +8,11 @@ import {
 import { JwtToken } from 'src/jwt/interfaces';
 import * as bcrypt from 'bcrypt';
 
+/**
+ * UserService provides business logic for user management, including user retrieval, update, and deletion.
+ *
+ * Depends on UserRepository for data persistence and retrieval.
+ */
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
@@ -48,8 +53,6 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    await this.findOneById(id);
-
     if (updateUserDto.email) {
       const existingUser = await this.userRepository.findOneByEmail(
         updateUserDto.email,
@@ -67,7 +70,6 @@ export class UserService {
   }
 
   async remove(id: number) {
-    await this.findOneById(id);
     return this.userRepository.remove(id);
   }
 }

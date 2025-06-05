@@ -3,7 +3,6 @@ import {
   Post,
   Body,
   Res,
-  Req,
   UseGuards,
   HttpCode,
 } from '@nestjs/common';
@@ -12,9 +11,20 @@ import { CreateUserDto } from '../user/dto';
 import { LoginDto } from './dto';
 import { Response } from 'express';
 import { JwtAuthGuard } from '../jwt/guards';
-import { RequestWithUser } from './interfaces';
 import { type JwtToken } from 'src/jwt/interfaces';
+import { User } from '../common/decorators';
+import { type User as IUser } from '../common/interfaces';
 
+/**
+ * AuthController handles all authentication-related HTTP requests such as registration, login, and logout.
+ *
+ * Endpoints:
+ * - POST /auth/register: Register a new user
+ * - POST /auth/login: Authenticate user and return tokens
+ * - POST /auth/logout: Logout user and invalidate refresh token
+ *
+ * Uses AuthService for business logic and JWT for token management.
+ */
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -51,8 +61,8 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Post('logout')
   @HttpCode(200)
-  async logout(@Req() { user }: RequestWithUser) {
-    await this.authService.logout(user.id);
+  async logout(@User() { id }: IUser) {
+    await this.authService.logout(id);
 
     return {
       message: 'Logged out successfully',

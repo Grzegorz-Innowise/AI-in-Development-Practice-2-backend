@@ -5,7 +5,18 @@ import {
   AccessTokenRequiredException,
   SessionExpiredException,
 } from '../exceptions';
+import { type Request } from 'express';
 
+/**
+ * JwtAuthGuard is a custom guard that protects routes by validating JWT access tokens.
+ *
+ * - Extracts the token from the Authorization header.
+ * - Verifies the token using JwtService.
+ * - Loads the user from the database and attaches it to the request object.
+ * - Throws appropriate exceptions if the token is missing, invalid, or the session is expired.
+ *
+ * Used to secure endpoints that require authentication.
+ */
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
   constructor(
@@ -14,7 +25,7 @@ export class JwtAuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest<Request>();
     const authHeader = request.headers['authorization'];
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {

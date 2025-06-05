@@ -4,6 +4,12 @@ import { userSelect } from './utils';
 import { UpdateUserDto, CreateUserDto } from './dto';
 import { JwtToken } from 'src/jwt/interfaces';
 
+/**
+ * UserRepository provides methods for interacting with the user-related tables in the database.
+ *
+ * Handles user creation, retrieval, update, and refresh token management.
+ * Uses DatabaseService for database operations.
+ */
 @Injectable()
 export class UserRepository {
   constructor(private readonly dbService: DatabaseService) {}

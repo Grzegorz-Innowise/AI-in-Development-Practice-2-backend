@@ -21,15 +21,53 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+# Backend App
+
+A progressive [NestJS](https://nestjs.com/) backend application using PostgreSQL, Prisma ORM, JWT authentication, Docker, and E2E tests.
+
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This project is a modular NestJS backend with:
+
+- PostgreSQL database (via Prisma ORM)
+- JWT authentication (access & refresh tokens)
+- Secure password hashing (bcrypt)
+- Validation with class-validator
+- Docker support for easy deployment
+- E2E and unit tests (Jest, Supertest)
 
 ## Project setup
 
 ```bash
 $ npm install
 ```
+
+## Environment Variables
+
+All environment variables are defined in `.env` files. Example:
+
+```env
+POSTGRES_PORT=5432
+POSTGRES_USER=username
+POSTGRES_PASSWORD=password
+POSTGRES_DB=db_name
+
+# IMPORTANT: db host must match your environment!
+# For Docker Compose (compose.yml):
+DATABASE_URL=postgresql://username:password@postgres:5432/db_name?schema=public
+# For local development (without dockerize backend app):
+# DATABASE_URL=postgresql://username:password@localhost:5432/db_name?schema=public
+
+JWT_ACCESS_EXPIRATION_TIME=3600
+JWT_REFRESH_EXPIRATION_TIME=604800
+JWT_ACCESS_SECRET=your_access_secret
+JWT_REFRESH_SECRET=your_refresh_secret
+```
+
+> **Note:**
+>
+> - When running with Docker Compose (`compose.yml`), set the `host` to `postgres`.
+> - When running locally, set the `host` to `localhost`.
 
 ## Compile and run the project
 
@@ -42,6 +80,26 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
+```
+
+## Docker
+
+### Build and run with Docker Compose
+
+```bash
+# For production/dev stack (app + postgres)
+$ docker compose -f compose.yml up --build
+```
+
+- This will start both the PostgreSQL and NestJS app containers.
+- The app will be available at [http://localhost:3000](http://localhost:3000)
+- Prisma migrations, client generation, and seeding are handled automatically in the Dockerfile.
+
+### Development database only
+
+```bash
+# Only start postgres (for local development)
+$ docker compose -f compose.dev.yml up
 ```
 
 ## Run tests
@@ -57,41 +115,34 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Deployment
+## Useful scripts
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+- `npm run seed` – seed the database (see `prisma/seed.ts`)
+- `npx prisma migrate dev` – run migrations in dev
+- `npx prisma migrate deploy` – run migrations in prod
+- `npx prisma generate` – generate Prisma client
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Project structure
 
-```bash
-$ npm install -g mau
-$ mau deploy
 ```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+src/
+  app.module.ts
+  main.ts
+  auth/
+  database/
+  jwt/
+  user/
+prisma/
+  schema.prisma
+  seed.ts
+test/
+  auth.controller.e2e-spec.ts
+Dockerfile
+compose.yml
+compose.dev.yml
+.env
+package.json
+```
 
 ## License
 

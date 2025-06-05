@@ -1,3 +1,10 @@
+/**
+ * Entry point for the NestJS application.
+ *
+ * - Sets up global validation pipes for request validation.
+ * - Starts the application on the specified port (default: 3000).
+ */
+
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';

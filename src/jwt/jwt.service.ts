@@ -1,8 +1,4 @@
-import {
-  AccessTokenRequiredException,
-  InvalidAccessTokenException,
-  SessionExpiredException,
-} from './exceptions';
+import { InvalidAccessTokenException } from './exceptions';
 import { Injectable } from '@nestjs/common';
 import { JwtService as NestJwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -10,6 +6,15 @@ import { type JwtPayload } from './interfaces';
 
 const MILLISECONDS_IN_SECOND = 1000;
 
+/**
+ * JwtService provides methods for signing and verifying JWT access and refresh tokens.
+ *
+ * - Loads secrets and expiration times from environment variables using ConfigService.
+ * - Signs access and refresh tokens with appropriate secrets and expiration.
+ * - Verifies access tokens and throws exceptions for invalid tokens.
+ *
+ * Used throughout the application for authentication and authorization.
+ */
 @Injectable()
 export class JwtService {
   private readonly accessTokenExpiresIn: string;

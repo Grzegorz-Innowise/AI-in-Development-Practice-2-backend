@@ -12,7 +12,20 @@ import {
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto';
 import { JwtAuthGuard } from '../jwt/guards/jwt-auth.guard';
+import { type User as IUser } from '../common/interfaces';
+import { User } from '../common/decorators';
 
+/**
+ * UserController handles all user-related HTTP requests such as retrieving, updating, and deleting users.
+ *
+ * Endpoints:
+ * - GET /user: Retrieve a list of users
+ * - GET /user/:id: Retrieve a user by ID
+ * - PATCH /user/:id: Update a user
+ * - DELETE /user/:id: Delete a user
+ *
+ * Uses UserService for business logic and data persistence.
+ */
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -33,11 +46,8 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':id')
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
+  @Patch()
+  async update(@User() { id }: IUser, @Body() updateUserDto: UpdateUserDto) {
     const updatedUser = await this.userService.update(id, updateUserDto);
     return {
       message: 'User updated successfully',
@@ -47,8 +57,8 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number) {
+  @Delete()
+  async remove(@User() { id }: IUser) {
     const deletedUser = await this.userService.remove(id);
     return {
       message: 'User deleted successfully',

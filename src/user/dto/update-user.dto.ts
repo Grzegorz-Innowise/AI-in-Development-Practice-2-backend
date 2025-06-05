@@ -27,6 +27,16 @@ class AtLeastOneFieldConstraint implements ValidatorConstraintInterface {
 
 import { IsString, IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 
+/**
+ * Data Transfer Object for updating user information.
+ *
+ * All fields are optional, but at least one must be provided for a valid update request.
+ *
+ * @property {string} [password] - The user's new password.
+ * @property {string} [name] - The user's new name.
+ * @property {string} [email] - The user's new email address.
+ * @property {unknown} [_atLeastOneField] - Internal property for validation (at least one field required).
+ */
 export class UpdateUserDto {
   @IsOptional()
   @IsString()

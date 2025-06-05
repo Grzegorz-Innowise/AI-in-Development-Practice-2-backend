@@ -1,3 +1,9 @@
+/**
+ * Provides a Prisma select object for retrieving user data with nested address, geo, and company fields.
+ *
+ * Use this object in Prisma queries to select only the necessary fields for user responses.
+ */
+
 export const userSelect = {
   userId: true,
   username: true,

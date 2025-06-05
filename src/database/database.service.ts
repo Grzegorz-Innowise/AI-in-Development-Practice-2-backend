@@ -7,6 +7,11 @@ import {
 import { PrismaClient } from '@prisma/client';
 import { DatabaseConnectionInfo } from './utils';
 
+/**
+ * DatabaseService manages the application's database connection and provides access to the database client.
+ *
+ * This service is typically injected into repositories and other services that require database access.
+ */
 @Injectable()
 export class DatabaseService
   extends PrismaClient

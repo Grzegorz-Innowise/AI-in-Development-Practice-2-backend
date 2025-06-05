@@ -54,7 +54,16 @@ main()
     console.log('✅ Seed completed');
   })
   .catch((e) => {
-    console.error(e);
-    process.exit(1);
+    if (
+      e.code === 'P2002' ||
+      e.message?.includes('Unique constraint failed') ||
+      e.message?.includes('duplicate key value')
+    ) {
+      console.log(
+        '⚠️ Unique constraint violation or duplicate key detected. Skipping entry.',
+      );
+    } else {
+      console.error('❌ Error:', e);
+    }
   })
   .finally(() => prisma.$disconnect());

@@ -9,6 +9,12 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '../jwt/jwt.service';
 import { LoginDto } from './dto';
 
+/**
+ * AuthService provides authentication business logic, including user registration, login, logout,
+ * password hashing, and token management.
+ *
+ * Depends on UserService for user operations and JwtService for token generation.
+ */
 @Injectable()
 export class AuthService {
   constructor(
