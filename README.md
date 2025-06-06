@@ -52,10 +52,10 @@ POSTGRES_USER=username
 POSTGRES_PASSWORD=password
 POSTGRES_DB=db_name
 
-# IMPORTANT: db host must match your environment!
-# For Docker Compose (compose.yml):
+# Set the DATABASE_URL host according to your environment:
+# - For production (compose.yml):
 DATABASE_URL=postgresql://username:password@postgres:5432/db_name?schema=public
-# For local development (without dockerize backend app):
+# - For local development (compose.dev.yml):
 # DATABASE_URL=postgresql://username:password@localhost:5432/db_name?schema=public
 
 JWT_ACCESS_EXPIRATION_TIME=3600
@@ -66,8 +66,9 @@ JWT_REFRESH_SECRET=your_refresh_secret
 
 > **Note:**
 >
-> - When running with Docker Compose (`compose.yml`), set the `host` to `postgres`.
-> - When running locally, set the `host` to `localhost`.
+> If you're running the project using the production compose.yml, set the host in DATABASE_URL to `postgres`.
+>
+> If you're running the project locally using compose.dev.yml, set the host in DATABASE_URL to `localhost`.
 
 ## Compile and run the project
 

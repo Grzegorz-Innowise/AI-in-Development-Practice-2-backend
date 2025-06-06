@@ -1,10 +1,34 @@
 import { PrismaClient } from '@prisma/client';
 import axios from 'axios';
 
+type User = {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+};
+
 const prisma = new PrismaClient();
 
 async function main() {
-  const { data: users } = await axios.get(
+  const { data: users } = await axios.get<User[]>(
     'https://jsonplaceholder.typicode.com/users',
   );
 
@@ -53,11 +77,12 @@ main()
   .then(() => {
     console.log('✅ Seed completed');
   })
-  .catch((e) => {
+  .catch((e: unknown) => {
     if (
-      e.code === 'P2002' ||
-      e.message?.includes('Unique constraint failed') ||
-      e.message?.includes('duplicate key value')
+      typeof e === 'object' &&
+      e !== null &&
+      'code' in e &&
+      e.code === 'P2002'
     ) {
       console.log(
         '⚠️ Unique constraint violation or duplicate key detected. Skipping entry.',
@@ -66,4 +91,6 @@ main()
       console.error('❌ Error:', e);
     }
   })
-  .finally(() => prisma.$disconnect());
+  .finally(() => {
+    void prisma.$disconnect();
+  });

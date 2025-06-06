@@ -19,10 +19,11 @@ import { User } from '../common/decorators';
  * UserController handles all user-related HTTP requests such as retrieving, updating, and deleting users.
  *
  * Endpoints:
- * - GET /user: Retrieve a list of users
- * - GET /user/:id: Retrieve a user by ID
- * - PATCH /user/:id: Update a user
- * - DELETE /user/:id: Delete a user
+ * - GET /users: Retrieve a list of users
+ * - GET /users/:id: Retrieve a user by ID
+ * - GET /users/:id/company: Retrieve a user's company by user ID
+ * - PATCH /users: Update a user
+ * - DELETE /users: Delete a user
  *
  * Uses UserService for business logic and data persistence.
  */
